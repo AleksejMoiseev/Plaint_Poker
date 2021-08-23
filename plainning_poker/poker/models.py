@@ -34,11 +34,22 @@ class Task(models.Model):
     updated_at = models.DateTimeField(auto_now=True, null=True)
     descriptions = models.TextField(null=True)
     grade = models.IntegerField(null=True)
-    room = models.ForeignKey(to='Room', on_delete=models.CASCADE)
+    room = models.ForeignKey(
+        to='Room',
+        on_delete=models.CASCADE,
+        related_name='tasks',
+        related_query_name='tasks_q'
+    )
+
+    class Meta:
+        ordering = ['status']
+
+    def __repr__(self):
+        return f"Task {self.pk} name {self.name} status {self.status}"
 
 
 class VoteResult(models.Model):
-    task = models.ForeignKey(to='Task', on_delete=models.CASCADE)
+    task = models.ForeignKey(to='Task', on_delete=models.CASCADE, related_name='vote_result')
     user = models.ForeignKey(to='User', on_delete=models.CASCADE, related_name='vote_user')
     grade = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)

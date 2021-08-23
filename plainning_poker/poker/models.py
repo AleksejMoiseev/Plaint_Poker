@@ -38,15 +38,26 @@ class Task(models.Model):
 
 
 class VoteResult(models.Model):
-    pass
+    task = models.ForeignKey(to='Task', on_delete=models.CASCADE)
+    user = models.ForeignKey(to='User', on_delete=models.CASCADE, related_name='vote_user')
+    grade = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Room(models.Model):
-    pass
+    id = models.UUIDField(verbose_name='Room', editable=False, default=uuid.uuid4, primary_key=True)
+    name = models.CharField(max_length=50)
+    properties = models.JSONField(null=False)
 
 
 class UserRole(models.Model):
-    pass
+    user = models.ForeignKey(to='User', on_delete=models.CASCADE, related_name='user_role')
+    room = models.ForeignKey(to='Room', on_delete=models.CASCADE, related_name='rooms')
+    #role =
+
+    class Meta:
+        unique_together = ['user', 'room']
 
 
 class Grade(models.Model):

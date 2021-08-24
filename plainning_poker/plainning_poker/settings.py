@@ -17,6 +17,8 @@ INSTALLED_APPS = [
     'poker.apps.PokerConfig',
 ]
 
+AUTH_USER_MODEL = 'poker.User'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

@@ -1,8 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from enum import Enum
+import uuid
 
-# Create your models here.
+
+class DateTimeFieldMixin:
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
 
 
 class User(AbstractUser):
@@ -10,39 +14,36 @@ class User(AbstractUser):
 
 
 class Role(Enum):
-    observer = 0
-    moderator = 1
-    player = 2
+    observer = 'observer'
+    moderator = 'moderator'
+    player = 'player'
 
 
-class Task(models.Model):
+class Task(models.Model, DateTimeFieldMixin):
     class STATUS:
-        CREATE = 0
-        IN_PROGRESS = 1
-        DONE = 2
+        CREATED = 'created'
+        IN_PROGRESS = 'in_progress'
+        DONE = 'done'
 
         CHOICES = (
-            (CREATE, 'created'),
+            (CREATED, 'created'),
             (IN_PROGRESS, 'in_progress'),
             (DONE, 'done')
         )
 
     name = models.CharField(max_length=150)
     url = models.URLField()
-    status = models.SmallIntegerField(choices=STATUS.CHOICES, default=STATUS.CREATE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True, null=True)
-    descriptions = models.TextField(null=True)
+    status = models.SmallIntegerField(choices=STATUS.CHOICES, default=STATUS.CREATED)
     grade = models.IntegerField(null=True)
     room = models.ForeignKey(
         to='Room',
         on_delete=models.CASCADE,
         related_name='tasks',
-        related_query_name='tasks_q'
+        related_query_name='tasks_query'
     )
 
     class Meta:
-        ordering = ['status']
+        ordering = ['created_at']
 
     def __repr__(self):
         return f"Task {self.pk} name {self.name} status {self.status}"
@@ -55,21 +56,37 @@ class VoteResult(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __repr__(self):
+        return f"Task: {self.task} User: {self.user}, Grade: {self.grade}"
+
 
 class Room(models.Model):
     id = models.UUIDField(verbose_name='Room', editable=False, default=uuid.uuid4, primary_key=True)
     name = models.CharField(max_length=50)
     properties = models.JSONField(null=False)
 
+    def __repr__(self):
+        return 'name room {}'.format(self.name)
+
 
 class UserRole(models.Model):
+    class STATUS:
+        observer = Role.observer.name
+        moderator = Role.moderator.name
+        player = Role.player.name
+
+        CHOICES = (
+            (observer, Role.observer.name),
+            (moderator, Role.moderator.name),
+            (player, Role.player.name)
+        )
+
     user = models.ForeignKey(to='User', on_delete=models.CASCADE, related_name='user_role')
     room = models.ForeignKey(to='Room', on_delete=models.CASCADE, related_name='rooms')
-    #role =
+    role = models.CharField(default=STATUS.observer, choices=STATUS.CHOICES)
 
     class Meta:
-        unique_together = ['user', 'room']
+        unique_together = ['user', 'room', 'role']
 
-
-class Grade(models.Model):
-    pass
+    def __repr__(self):
+        return f"User: {self.user}  Role:{self.role} Room: {self.room}"

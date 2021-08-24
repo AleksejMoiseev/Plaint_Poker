@@ -14,19 +14,19 @@ class CustomUserAdmin(UserAdmin):
 
 @admin.register(pm.Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = '__all__'
+    list_display = ('name', 'status', 'grade')
 
 
 @admin.register(pm.VoteResult)
 class VoteResultAdmin(admin.ModelAdmin):
-    list_display = '__all__'
+    list_display = ('task', 'user', 'grade')
 
 
 @admin.register(pm.Room)
 class RoomAdmin(admin.ModelAdmin):
-    list_display = '__all__'
+    list_display = ('id', 'name', 'properties')
 
 
 @admin.register(pm.UserRole)
 class UserRoleAdmin(admin.ModelAdmin):
-    list_display = '__all__'
+    list_display = ('user', 'room', 'role')

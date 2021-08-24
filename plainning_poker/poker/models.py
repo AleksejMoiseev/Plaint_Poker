@@ -42,8 +42,6 @@ class Task(models.Model, DateTimeFieldMixin):
         related_query_name='tasks_query'
     )
 
-    class Meta:
-        ordering = ['created_at']
 
     def __repr__(self):
         return f"Task {self.pk} name {self.name} status {self.status}"
@@ -83,7 +81,7 @@ class UserRole(models.Model):
 
     user = models.ForeignKey(to='User', on_delete=models.CASCADE, related_name='user_role')
     room = models.ForeignKey(to='Room', on_delete=models.CASCADE, related_name='rooms')
-    role = models.CharField(default=STATUS.observer, choices=STATUS.CHOICES)
+    role = models.CharField(default=STATUS.observer, choices=STATUS.CHOICES, max_length=50)
 
     class Meta:
         unique_together = ['user', 'room', 'role']

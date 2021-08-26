@@ -15,8 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from poker.views import test
+from poker import views
 
 urlpatterns = [
-    path('test/', test),
+    path('test/', views.test),
+    path('register/', views.RegisterUser.as_view()),
 ]

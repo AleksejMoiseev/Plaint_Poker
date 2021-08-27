@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from enum import Enum
 import uuid
 
+from django.urls import reverse
+
 
 class DateTimeFieldMixin:
     created_at = models.DateTimeField(auto_now_add=True)
@@ -66,6 +68,10 @@ class Room(models.Model):
     def __repr__(self):
         return 'name room {}'.format(self.name)
 
+    def get_absolut_url(self):
+        name_path = '#'
+        return reverse(name_path, kwargs={'id': self.pk})
+
 
 class UserRole(models.Model):
     class STATUS:
@@ -81,7 +87,7 @@ class UserRole(models.Model):
 
     user = models.ForeignKey(to='User', on_delete=models.CASCADE, related_name='user_role')
     room = models.ForeignKey(to='Room', on_delete=models.CASCADE, related_name='rooms')
-    role = models.CharField(default=STATUS.observer, choices=STATUS.CHOICES, max_length=50)
+    role = models.CharField(default=STATUS.player, choices=STATUS.CHOICES, max_length=50)
 
     class Meta:
         unique_together = ['user', 'room', 'role']

@@ -1,0 +1,22 @@
+{% extends "poker/menu.html" %}
+
+
+{% block header %}
+<br><br><br><br><br><br><br><br><br><br>
+{% endblock %}
+
+
+{% block content %}
+<div class="margin">
+<form action="" method="post">{% csrf_token %}
+  <div class="form-group">
+      {% for f in form %}
+    <label class="form-label" for="{{f.id_for_label}}">{{f.label}}: </label>
+      <p>{{f}}</p>
+      <div class="alert-danger">{{f.errors}}</div>
+       {% endfor%}
+  </div>
+    <input type="submit" value="REGISTER">
+</form>
+</div>
+{% endblock %}

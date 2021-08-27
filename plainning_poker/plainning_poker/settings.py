@@ -1,9 +1,11 @@
+from poker.views import pageNotFound
+
 try:
     from plainning_poker.settings_alex import *
 except ImportError:
     from .prod_settings import *
 
-TEMPLATE_DIR = BASE_DIR.joinpath('poker/template/poker')
+#TEMPLATE_DIR = BASE_DIR.joinpath('poker/template/poker')
 
 DEBUG = True
 
@@ -41,7 +43,7 @@ ROOT_URLCONF = 'plainning_poker.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATE_DIR, ],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -97,4 +99,8 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+
 

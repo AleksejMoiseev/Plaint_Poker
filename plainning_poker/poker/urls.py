@@ -13,11 +13,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+
 from poker import views
+from poker.views import pageNotFound, unauthorized_error
 
 urlpatterns = [
-    path('test/', views.test),
+    path('test/', views.test, name='test'),
     path('register/', views.RegisterUser.as_view()),
 ]
+
+
+handler404 = pageNotFound
+handler401 = unauthorized_error

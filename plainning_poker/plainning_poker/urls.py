@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from poker.views import page_not_found
+from poker.views import pageNotFound, unauthorized_error
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('poker.urls')),
 ]
 
-handler404 = page_not_found
+handler404 = pageNotFound
+handler401 = unauthorized_error

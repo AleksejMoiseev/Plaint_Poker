@@ -1,15 +1,10 @@
-from django.shortcuts import render
 from django.http.response import HttpResponse
+from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from rest_framework import status
 
 from poker.forms import RegisterUserForm
-from django.urls import reverse_lazy
-from django.shortcuts import render
-from rest_framework import status
-
-
-# Create your views here.
 
 
 def test(request):
@@ -17,11 +12,11 @@ def test(request):
 
 
 def pageNotFound(request, exception):
-    return render(request=request, template_name='error_404.html', status=status.HTTP_404_NOT_FOUND)
+    return render(request=request, template_name='errors/error_404.html', status=status.HTTP_404_NOT_FOUND)
 
 
 def unauthorized_error(request, exception):
-    return render(request=request, template_name='error_401.html', status=status.HTTP_401_UNAUTHORIZED)
+    return render(request=request, template_name='errors/error_401.html', status=status.HTTP_401_UNAUTHORIZED)
 
 
 class RegisterUser(CreateView):
@@ -30,11 +25,4 @@ class RegisterUser(CreateView):
     extra_context = {'title': 'Register'}
     success_url = reverse_lazy('/test/')
 
-
-def page_not_found(request, exceptions):
-    render(request=request, template_name='error_404.html', status=status.HTTP_404_NOT_FOUND)
-
-
-def unauthorized_error(request, exceptions):
-    render(request=request, template_name='error_401.html', status=status.HTTP_401_UNAUTHORIZED)
 

@@ -1,4 +1,3 @@
-from poker.views import pageNotFound
 
 try:
     from plainning_poker.settings_alex import *
